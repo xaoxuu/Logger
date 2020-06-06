@@ -14,7 +14,7 @@
 		CD0C8ABB248B88570080C4A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD0C8ABA248B88570080C4A1 /* Preview Assets.xcassets */; };
 		CD0C8ABE248B88570080C4A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD0C8ABC248B88570080C4A1 /* LaunchScreen.storyboard */; };
 		CD0C8AC9248B88570080C4A1 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0C8AC8248B88570080C4A1 /* LoggerTests.swift */; };
-		CD0C8AD6248B88B60080C4A1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0C8AD5248B88B60080C4A1 /* Logger.swift */; };
+		CD75E91B248BB3B40051925C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD75E91A248BB3B40051925C /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +39,7 @@
 		CD0C8AC4248B88570080C4A1 /* LoggerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0C8AC8248B88570080C4A1 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		CD0C8ACA248B88570080C4A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD0C8AD5248B88B60080C4A1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		CD75E91A248BB3B40051925C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 				CD0C8AB1248B88560080C4A1 /* AppDelegate.swift */,
 				CD0C8AB3248B88560080C4A1 /* SceneDelegate.swift */,
 				CD0C8AB5248B88560080C4A1 /* ContentView.swift */,
-				CD0C8AD4248B88AE0080C4A1 /* Sources */,
+				CD75E918248BB3B40051925C /* Sources */,
 				CD0C8AB7248B88570080C4A1 /* Assets.xcassets */,
 				CD0C8ABC248B88570080C4A1 /* LaunchScreen.storyboard */,
 				CD0C8ABF248B88570080C4A1 /* Info.plist */,
@@ -110,12 +110,20 @@
 			path = LoggerTests;
 			sourceTree = "<group>";
 		};
-		CD0C8AD4248B88AE0080C4A1 /* Sources */ = {
+		CD75E918248BB3B40051925C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				CD0C8AD5248B88B60080C4A1 /* Logger.swift */,
+				CD75E919248BB3B40051925C /* Logger */,
 			);
 			path = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		CD75E919248BB3B40051925C /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				CD75E91A248BB3B40051925C /* Logger.swift */,
+			);
+			path = Logger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,7 +230,7 @@
 				CD0C8AB2248B88560080C4A1 /* AppDelegate.swift in Sources */,
 				CD0C8AB4248B88560080C4A1 /* SceneDelegate.swift in Sources */,
 				CD0C8AB6248B88560080C4A1 /* ContentView.swift in Sources */,
-				CD0C8AD6248B88B60080C4A1 /* Logger.swift in Sources */,
+				CD75E91B248BB3B40051925C /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
