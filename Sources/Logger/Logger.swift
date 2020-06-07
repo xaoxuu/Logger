@@ -159,23 +159,21 @@ extension Logger {
     ///   - function: 记录所在函数
     func record(level: Level = .none, items: [Any], file: String = #file, line: Int = #line, function: String = #function) {
         guard Logger.enable == true else { return }
-        queue.async {
-            // 标题
-            var str = "\n"
-            if let emoji = level.emoji {
-                str += " " + emoji + " "
-            }
-            str += "[\(self.time())](\(level.rawValue)) "
-            str += self.meta(file: file, line: line, function: function)
-            print(str.replacingOccurrences(of: "`", with: ""))
-            // 内容
-            if items.count > 0 {
-                let body = self.body(items)
-                str += "\n```" + body + "```\n"
-                print(body.replacingOccurrences(of: "\n", with: ""))
-            }
-            self.write(str)
+        // 标题
+        var str = "\n"
+        str += "[\(time())](\(level.rawValue)) "
+        if let emoji = level.emoji {
+            str += emoji + " "
         }
+        str += meta(file: file, line: line, function: function)
+        print(str.replacingOccurrences(of: "`", with: ""))
+        // 内容
+        if items.count > 0 {
+            let bodyStr = body(items)
+            str += "\n```" + bodyStr + "```\n"
+            print(bodyStr.replacingOccurrences(of: "\n", with: ""))
+        }
+        write(str)
     }
     
 }
@@ -225,13 +223,15 @@ extension Logger {
     /// 写日志到文件
     /// - Parameter str: 日志内容
     func write(_ str: String) {
-        let path = fileURL().path
-        if let handle = FileHandle.init(forWritingAtPath: path), let data = str.data(using: .utf8) {
-            handle.seekToEndOfFile()
-            handle.write(data)
-            handle.closeFile()
-        } else {
-            print("写日志失败！")
+        queue.async {
+            let path = self.fileURL().path
+            if let handle = FileHandle.init(forWritingAtPath: path), let data = str.data(using: .utf8) {
+                handle.seekToEndOfFile()
+                handle.write(data)
+                handle.closeFile()
+            } else {
+                print("写日志失败！")
+            }
         }
     }
     
