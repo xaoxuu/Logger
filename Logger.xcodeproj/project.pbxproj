@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CD0C8AAE248B88560080C4A1 /* Logger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Logger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD0C8AAE248B88560080C4A1 /* 测试项目.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "测试项目.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0C8AB1248B88560080C4A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD0C8AB3248B88560080C4A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CD0C8AB5248B88560080C4A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 		CD0C8AAF248B88560080C4A1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CD0C8AAE248B88560080C4A1 /* Logger.app */,
+				CD0C8AAE248B88560080C4A1 /* 测试项目.app */,
 				CD0C8AC4248B88570080C4A1 /* LoggerTests.xctest */,
 			);
 			name = Products;
@@ -84,7 +84,7 @@
 				CD0C8AB1248B88560080C4A1 /* AppDelegate.swift */,
 				CD0C8AB3248B88560080C4A1 /* SceneDelegate.swift */,
 				CD0C8AB5248B88560080C4A1 /* ContentView.swift */,
-				CD75E918248BB3B40051925C /* Sources */,
+				CD75E918248BB3B40051925C /* Source */,
 				CD0C8AB7248B88570080C4A1 /* Assets.xcassets */,
 				CD0C8ABC248B88570080C4A1 /* LaunchScreen.storyboard */,
 				CD0C8ABF248B88570080C4A1 /* Info.plist */,
@@ -110,21 +110,13 @@
 			path = LoggerTests;
 			sourceTree = "<group>";
 		};
-		CD75E918248BB3B40051925C /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				CD75E919248BB3B40051925C /* Logger */,
-			);
-			path = Sources;
-			sourceTree = SOURCE_ROOT;
-		};
-		CD75E919248BB3B40051925C /* Logger */ = {
+		CD75E918248BB3B40051925C /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				CD75E91A248BB3B40051925C /* Logger.swift */,
 			);
-			path = Logger;
-			sourceTree = "<group>";
+			path = Source;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -143,7 +135,7 @@
 			);
 			name = Logger;
 			productName = Logger;
-			productReference = CD0C8AAE248B88560080C4A1 /* Logger.app */;
+			productReference = CD0C8AAE248B88560080C4A1 /* 测试项目.app */;
 			productType = "com.apple.product-type.application";
 		};
 		CD0C8AC3248B88570080C4A1 /* LoggerTests */ = {
@@ -392,7 +384,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.xaoxuu.Logger;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "测试项目";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -412,7 +404,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.xaoxuu.Logger;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "测试项目";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

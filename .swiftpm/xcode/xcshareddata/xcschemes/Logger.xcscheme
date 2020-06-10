@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CD0C8AAD248B88560080C4A1"
-               BuildableName = "&#x6d4b;&#x8bd5;&#x9879;&#x76ee;.app"
+               BlueprintIdentifier = "Logger"
+               BuildableName = "Logger"
                BlueprintName = "Logger"
-               ReferencedContainer = "container:Logger.xcodeproj">
+               ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CD0C8AC3248B88570080C4A1"
-               BuildableName = "LoggerTests.xctest"
-               BlueprintName = "LoggerTests"
-               ReferencedContainer = "container:Logger.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -50,16 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD0C8AAD248B88560080C4A1"
-            BuildableName = "&#x6d4b;&#x8bd5;&#x9879;&#x76ee;.app"
-            BlueprintName = "Logger"
-            ReferencedContainer = "container:Logger.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -67,16 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD0C8AAD248B88560080C4A1"
-            BuildableName = "&#x6d4b;&#x8bd5;&#x9879;&#x76ee;.app"
+            BlueprintIdentifier = "Logger"
+            BuildableName = "Logger"
             BlueprintName = "Logger"
-            ReferencedContainer = "container:Logger.xcodeproj">
+            ReferencedContainer = "container:">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

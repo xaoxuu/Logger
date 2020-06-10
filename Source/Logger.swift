@@ -14,6 +14,27 @@ private let dateFormatter = DateFormatter()
 /// 文件管理器
 private let fm = FileManager.default
 
+private struct InfoDict {
+    static var appName: String {
+        return (Bundle.main.infoDictionary?["CFBundleName"] as? String) ?? "unknown"
+    }
+    static var appVersion: String {
+        return (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "unknown"
+    }
+    static var appBuild: String {
+        return (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "unknown"
+    }
+    static var device: String {
+        return UIDevice.current.localizedModel
+    }
+    static var deviceName: String {
+        return UIDevice.current.name
+    }
+    static var systemVersion: String {
+        return "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+    }
+}
+
 // MARK: 日志
 public struct Logger {
     
@@ -74,6 +95,14 @@ public struct Logger {
         // 记录一次启动事件
         let msg = "## Launch at: " + time()
         write(msg)
+        var str = "\n```yaml\n"
+        str += "CFBundleName: \(InfoDict.appName)\n"
+        str += "CFBundleShortVersionString: \(InfoDict.appVersion)\n"
+        str += "CFBundleVersion: \(InfoDict.appBuild)\n"
+        str += "Device: \(InfoDict.device)\n"
+        str += "SystemVersion: \(InfoDict.systemVersion)\n"
+        str += "```\n"
+        write(str)
         // 输出文件路径
         print("[\(time())] Logger初始化成功！")
         print("日志文件路径: \(fileURL().path)")
@@ -191,7 +220,9 @@ extension Logger {
     /// 当前日志文件路径
     /// - Returns: 当前日志文件路径
     func fileURL() -> URL {
-        return baseURL().appendingPathComponent(today()+"."+ext, isDirectory: true)
+        // app名称 + 日期 + 设备名
+        let fileName = "\(InfoDict.appName)-\(today())-\(InfoDict.deviceName).\(ext)"
+        return baseURL().appendingPathComponent(fileName, isDirectory: true)
     }
     
     /// 获取所有日志的子路径
