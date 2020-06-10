@@ -18,6 +18,9 @@ private struct InfoDict {
     static var appName: String {
         return (Bundle.main.infoDictionary?["CFBundleName"] as? String) ?? "unknown"
     }
+    static var bundleIdentifier: String {
+        return Bundle.main.bundleIdentifier ?? "unknown"
+    }
     static var appVersion: String {
         return (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "unknown"
     }
@@ -96,11 +99,12 @@ public struct Logger {
         let msg = "## Launch at: " + time()
         write(msg)
         var str = "\n```yaml\n"
-        str += "CFBundleName: \(InfoDict.appName)\n"
-        str += "CFBundleShortVersionString: \(InfoDict.appVersion)\n"
-        str += "CFBundleVersion: \(InfoDict.appBuild)\n"
-        str += "Device: \(InfoDict.device)\n"
-        str += "SystemVersion: \(InfoDict.systemVersion)\n"
+        str += "appName: \(InfoDict.appName)\n"
+        str += "bundleIdentifier: \(InfoDict.bundleIdentifier)\n"
+        str += "appVersion: \(InfoDict.appVersion)\n"
+        str += "appBuild: \(InfoDict.appBuild)\n"
+        str += "device: \(InfoDict.device)\n"
+        str += "systemVersion: \(InfoDict.systemVersion)\n"
         str += "```\n"
         write(str)
         // 输出文件路径
