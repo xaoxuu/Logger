@@ -51,18 +51,14 @@ private var cacheLevel = Logger.Level.low
 // MARK: 日志
 public struct Logger {
     
-    /// 单例
-    public static let shared = Logger()
-    
-    
     /// 日志存放的文件夹
-    public let folder = "Logs"
+    public static var folder = "Logs"
     
     /// 日志文件扩展名
-    public let ext = "md"
+    public static var ext = "md"
     
     /// 日志输出线程
-    internal let queue = DispatchQueue(label: "com.xaoxuu.logger")
+    internal static let queue = DispatchQueue(label: "com.xaoxuu.logger")
     
     /// 日志等级
     public enum Level: Int, Codable, CaseIterable {
@@ -111,19 +107,19 @@ public struct Logger {
     private init() {
         guard enableLogger == true else { return }
         // 创建文件夹
-        try? fm.createDirectory(at: baseURL(), withIntermediateDirectories: true, attributes: nil)
+        try? fm.createDirectory(at: Logger.baseURL(), withIntermediateDirectories: true, attributes: nil)
         // 路径
-        let path = fileURL().path
+        let path = Logger.fileURL().path
         if let _ = FileHandle.init(forWritingAtPath: path) {
             // 已经有文件了，往后加空行
-            write("\n\n")
+            Logger.write("\n\n")
         } else {
             // 没有文件就创建文件
             fm.createFile(atPath: path, contents: nil, attributes: nil)
         }
         // 记录一次启动事件
-        let msg = "## Launch at: " + time()
-        write(msg)
+        let msg = "## Launch at: " + Logger.time()
+        Logger.write(msg)
         var str = "\n```yaml\n"
         str += "appName: \(InfoDict.appName)\n"
         str += "bundleIdentifier: \(InfoDict.bundleIdentifier)\n"
@@ -132,10 +128,10 @@ public struct Logger {
         str += "device: \(InfoDict.device)\n"
         str += "systemVersion: \(InfoDict.systemVersion)\n"
         str += "```\n"
-        write(str)
+        Logger.write(str)
         // 输出文件路径
-        print("[\(time())] Logger初始化成功！")
-        print("日志文件路径: \(fileURL().path)")
+        print("[\(Logger.time())] Logger初始化成功！")
+        print("日志文件路径: \(Logger.fileURL().path)")
     }
     
     /// 输出日志
@@ -147,14 +143,14 @@ public struct Logger {
     ///   - function: 当前函数
     @discardableResult public init(level: Level = .low, _ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
         // 这里调用一次 shared 确保进行了初始化
-        Logger.shared.record(level: level, items: items, file: file, line: line, function: function)
+        Logger.record(level: level, items: items, file: file, line: line, function: function)
     }
     
     /// 通过 UIActivityViewController 分享日志
-    /// - Parameter count: 日志数
+    /// - Parameter logs: 日志数
     /// - Returns: UIActivityViewController
-    public static func share(count: Int = 7) -> UIActivityViewController {
-        let ac = UIActivityViewController.init(activityItems: Logger.shared.read(logs: count) ?? [URL](), applicationActivities: nil)
+    public static func share(logs count: Int = 7) -> UIActivityViewController {
+        let ac = UIActivityViewController.init(activityItems: Logger.read(logs: count) ?? [URL](), applicationActivities: nil)
         ac.excludedActivityTypes = [.airDrop, .mail]
         return ac
     }
@@ -167,14 +163,14 @@ extension Logger {
     
     /// 时间
     /// - Returns: 时间
-    func time() -> String {
+    static func time() -> String {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         return dateFormatter.string(from: Date())
     }
     
     /// 今日
     /// - Returns: 今日
-    func today() -> String {
+    static func today() -> String {
         let t = time()
         let ts = t.split(separator: " ")
         return ts.first?.description ?? "2020-01-01"
@@ -186,14 +182,14 @@ extension Logger {
     ///   - line: 代码行
     ///   - function: 函数
     /// - Returns: 元数据
-    func meta(file: String = #file, line: Int = #line, function: String = #function) -> String {
+    static func meta(file: String = #file, line: Int = #line, function: String = #function) -> String {
         return ((file as NSString).lastPathComponent as NSString).deletingPathExtension + " <line:\(line)> " + "`\(function)`"
     }
     
     /// 内容描述
     /// - Parameter items: 可变参数
     /// - Returns: 内容描述
-    func body(_ items: [Any]) -> String {
+    static func body(_ items: [Any]) -> String {
         if items.count > 0 {
             var str = "\n"
             for i in 0 ..< items.count {
@@ -216,7 +212,7 @@ extension Logger {
     ///   - file: 记录所在文件
     ///   - line: 记录所在行
     ///   - function: 记录所在函数
-    func record(level: Level = .low, items: [Any], file: String = #file, line: Int = #line, function: String = #function) {
+    static func record(level: Level = .low, items: [Any], file: String = #file, line: Int = #line, function: String = #function) {
         guard enableLogger == true else { return }
         // 标题
         var str = "\n"
@@ -249,14 +245,14 @@ extension Logger {
     
     /// 路径
     /// - Returns: 路径
-    func baseURL() -> URL {
+    static func baseURL() -> URL {
         let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         return url.appendingPathComponent(folder, isDirectory: true)
     }
     
     /// 当前日志文件路径
     /// - Returns: 当前日志文件路径
-    func fileURL() -> URL {
+    static func fileURL() -> URL {
         // app名称 + 日期 + 设备名
         let fileName = "\(InfoDict.appName)-\(today())-\(InfoDict.deviceName).\(ext)"
         return baseURL().appendingPathComponent(fileName, isDirectory: true)
@@ -264,7 +260,7 @@ extension Logger {
     
     /// 获取所有日志的子路径
     /// - Returns: 所有日志的子路径
-    func subpaths() -> [String] {
+    static func subpaths() -> [String] {
         var all = [String]()
         if let dirEnum = FileManager.default.enumerator(atPath: baseURL().path) {
             all = (dirEnum.allObjects as? [String]) ?? [String]()
@@ -278,7 +274,7 @@ extension Logger {
     /// 获取最新的几份日志
     /// - Parameter latest: 最新的几份
     /// - Returns: 日志
-    public func read(logs count: Int) -> [URL]? {
+    public static func read(logs count: Int) -> [URL]? {
         var logs = subpaths()
         if logs.count > count {
             logs = logs.dropLast(logs.count - count)
@@ -290,7 +286,7 @@ extension Logger {
     
     /// 写日志到文件
     /// - Parameter str: 日志内容
-    func write(_ str: String) {
+    static func write(_ str: String) {
         queue.async {
             let path = self.fileURL().path
             if let handle = FileHandle.init(forWritingAtPath: path), let data = str.data(using: .utf8) {
@@ -308,25 +304,25 @@ extension Logger {
 public extension Logger {
     
     static func trace(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .trace, items: items, file: file, line: line, function: function)
+        Logger.record(level: .trace, items: items, file: file, line: line, function: function)
     }
     static func debug(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .debug, items: items, file: file, line: line, function: function)
+        Logger.record(level: .debug, items: items, file: file, line: line, function: function)
     }
     static func info(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .info, items: items, file: file, line: line, function: function)
+        Logger.record(level: .info, items: items, file: file, line: line, function: function)
     }
     static func notice(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .notice, items: items, file: file, line: line, function: function)
+        Logger.record(level: .notice, items: items, file: file, line: line, function: function)
     }
     static func error(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .error, items: items, file: file, line: line, function: function)
+        Logger.record(level: .error, items: items, file: file, line: line, function: function)
     }
     static func warning(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .warning, items: items, file: file, line: line, function: function)
+        Logger.record(level: .warning, items: items, file: file, line: line, function: function)
     }
     static func critical(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        Logger.shared.record(level: .critical, items: items, file: file, line: line, function: function)
+        Logger.record(level: .critical, items: items, file: file, line: line, function: function)
     }
     
 }

@@ -75,7 +75,7 @@ struct ContentView: View {
 struct ShareVC: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        Logger.share(count: 7)
+        Logger.share(logs: 7)
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
