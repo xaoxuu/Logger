@@ -38,14 +38,22 @@ private struct InfoDict {
     }
 }
 
+/// 是否启用（可根据debug/release决定）
+private var enableLogger = true
+
+/// 打印等级（不低于此等级的会打印到控制台）
+private var printLevel = Logger.Level.low
+
+/// 缓存等级（不低于此等级的会缓存到沙盒）
+private var cacheLevel = Logger.Level.low
+
+
 // MARK: 日志
 public struct Logger {
     
     /// 单例
     public static let shared = Logger()
     
-    /// 是否启用（可根据debug/release决定）
-    public static var enable = true
     
     /// 日志存放的文件夹
     public let folder = "Logs"
@@ -57,8 +65,8 @@ public struct Logger {
     internal let queue = DispatchQueue(label: "com.xaoxuu.logger")
     
     /// 日志等级
-    public enum Level: String, Codable, CaseIterable {
-        case none = ""
+    public enum Level: Int, Codable, CaseIterable {
+        case low = 0
         case trace
         case debug
         case info
@@ -66,7 +74,7 @@ public struct Logger {
         case warning
         case error
         case critical
-        public typealias RawValue = String
+        
         public var emoji: String? {
             switch self {
             case .critical:
@@ -81,9 +89,27 @@ public struct Logger {
         }
     }
     
+    /// 设置是否使用
+    /// - Parameter flag: 是否使用
+    public static func setEnable(_ flag: Bool) {
+        enableLogger = flag
+    }
+    
+    /// 设置打印等级（不低于此等级的会打印到控制台）
+    /// - Parameter level: 打印等级
+    public static func setPrint(level: Level) {
+        printLevel = level
+    }
+    
+    /// 设置缓存等级（不低于此等级的会缓存到沙盒）
+    /// - Parameter level: 缓存等级
+    public static func setCache(level: Level) {
+        cacheLevel = level
+    }
+    
     /// 初始化
     private init() {
-        guard Logger.enable == true else { return }
+        guard enableLogger == true else { return }
         // 创建文件夹
         try? fm.createDirectory(at: baseURL(), withIntermediateDirectories: true, attributes: nil)
         // 路径
@@ -119,7 +145,7 @@ public struct Logger {
     ///   - file: 当前文件
     ///   - line: 当前行
     ///   - function: 当前函数
-    @discardableResult public init(level: Level = .none, _ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+    @discardableResult public init(level: Level = .low, _ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
         // 这里调用一次 shared 确保进行了初始化
         Logger.shared.record(level: level, items: items, file: file, line: line, function: function)
     }
@@ -190,8 +216,8 @@ extension Logger {
     ///   - file: 记录所在文件
     ///   - line: 记录所在行
     ///   - function: 记录所在函数
-    func record(level: Level = .none, items: [Any], file: String = #file, line: Int = #line, function: String = #function) {
-        guard Logger.enable == true else { return }
+    func record(level: Level = .low, items: [Any], file: String = #file, line: Int = #line, function: String = #function) {
+        guard enableLogger == true else { return }
         // 标题
         var str = "\n"
         str += "[\(time())](\(level.rawValue)) "
@@ -199,14 +225,21 @@ extension Logger {
             str += emoji + " "
         }
         str += meta(file: file, line: line, function: function)
-        print(str.replacingOccurrences(of: "`", with: ""))
+        if level.rawValue >= printLevel.rawValue {
+            print(str.replacingOccurrences(of: "`", with: ""))
+        }
+        
         // 内容
         if items.count > 0 {
             let bodyStr = body(items)
             str += "\n```" + bodyStr + "```\n"
-            print(bodyStr.replacingOccurrences(of: "\n", with: ""))
+            if level.rawValue >= printLevel.rawValue {
+                print(bodyStr.replacingOccurrences(of: "\n", with: ""))
+            }
         }
-        write(str)
+        if level.rawValue >= cacheLevel.rawValue {
+            write(str)
+        }
     }
     
 }
@@ -245,7 +278,7 @@ extension Logger {
     /// 获取最新的几份日志
     /// - Parameter latest: 最新的几份
     /// - Returns: 日志
-    func read(logs count: Int) -> [URL]? {
+    public func read(logs count: Int) -> [URL]? {
         var logs = subpaths()
         if logs.count > count {
             logs = logs.dropLast(logs.count - count)
@@ -268,6 +301,32 @@ extension Logger {
                 print("写日志失败！")
             }
         }
+    }
+    
+}
+
+public extension Logger {
+    
+    static func trace(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .trace, items: items, file: file, line: line, function: function)
+    }
+    static func debug(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .debug, items: items, file: file, line: line, function: function)
+    }
+    static func info(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .info, items: items, file: file, line: line, function: function)
+    }
+    static func notice(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .notice, items: items, file: file, line: line, function: function)
+    }
+    static func error(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .error, items: items, file: file, line: line, function: function)
+    }
+    static func warning(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .warning, items: items, file: file, line: line, function: function)
+    }
+    static func critical(_ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
+        Logger.shared.record(level: .critical, items: items, file: file, line: line, function: function)
     }
     
 }
