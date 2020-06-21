@@ -103,9 +103,9 @@ public struct Logger {
         cacheLevel = level
     }
     
+    private static let shared = Logger()
     /// 初始化
     private init() {
-        guard enableLogger == true else { return }
         // 创建文件夹
         try? fm.createDirectory(at: Logger.baseURL(), withIntermediateDirectories: true, attributes: nil)
         // 路径
@@ -142,7 +142,6 @@ public struct Logger {
     ///   - line: 当前行
     ///   - function: 当前函数
     @discardableResult public init(level: Level = .low, _ items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-        // 这里调用一次 shared 确保进行了初始化
         Logger.record(level: level, items: items, file: file, line: line, function: function)
     }
     
@@ -214,6 +213,7 @@ extension Logger {
     ///   - function: 记录所在函数
     static func record(level: Level = .low, items: [Any], file: String = #file, line: Int = #line, function: String = #function) {
         guard enableLogger == true else { return }
+        let _ = shared
         // 标题
         var str = "\n"
         str += "[\(time())](\(level.rawValue)) "
