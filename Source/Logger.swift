@@ -149,9 +149,7 @@ public struct Logger {
     /// - Parameter logs: 日志数
     /// - Returns: UIActivityViewController
     public static func share(logs count: Int = 7) -> UIActivityViewController {
-        let ac = UIActivityViewController.init(activityItems: Logger.read(logs: count) ?? [URL](), applicationActivities: nil)
-        ac.excludedActivityTypes = [.airDrop, .mail]
-        return ac
+        return UIActivityViewController.init(activityItems: Logger.export(logs: count) ?? [URL](), applicationActivities: nil)
     }
     
     
@@ -271,10 +269,10 @@ extension Logger {
         return all.sorted().reversed()
     }
     
-    /// 获取最新的几份日志
+    /// 导出最新的几份日志
     /// - Parameter latest: 最新的几份
     /// - Returns: 日志
-    public static func read(logs count: Int) -> [URL]? {
+    public static func export(logs count: Int) -> [URL]? {
         var logs = subpaths()
         if logs.count > count {
             logs = logs.dropLast(logs.count - count)
